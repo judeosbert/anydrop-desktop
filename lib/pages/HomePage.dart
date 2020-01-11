@@ -1,11 +1,10 @@
-import 'package:AnyDrop/widgets/LogScreen.dart';
-import 'package:flushbar/flushbar.dart';
-import 'package:flutter/material.dart';
 import 'package:AnyDrop/server/Server.dart';
 import 'package:AnyDrop/widgets/ConnectionParameterWidget.dart';
 import 'package:AnyDrop/widgets/ConnectionStatusBar.dart';
+import 'package:AnyDrop/widgets/LogScreen.dart';
 import 'package:AnyDrop/widgets/TransactionsList.dart';
-import 'package:package_info/package_info.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:flutter/material.dart';
 
 import '../DataTypes.dart';
 

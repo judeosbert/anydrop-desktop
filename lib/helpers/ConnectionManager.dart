@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:AnyDrop/DataTypes.dart';
+import 'package:AnyDrop/widgets/ReleaseValues.dart';
 import 'package:http/http.dart' show get;
-import 'package:package_info/package_info.dart';
 class ConnectionManager{
+  //TestValues
+  var testResult = '{ "v": "1.0", "bn": 1, "force": false, "sv": "2.0", "sbn": 2, "sforce": true }';
+
   static final ConnectionManager _instance = ConnectionManager._internal();
   factory ConnectionManager() => _instance;
   String updateURL = "https://my-json-server.typicode.com/judeosbert/anydrop-server-update/info";
@@ -14,25 +17,19 @@ class ConnectionManager{
     try{
     var result = await get(_instance.updateURL);
     Map<String,dynamic> updateValues = jsonDecode(result.body);
-    isUpdateAvailable.isForceUpdate = updateValues['force'];
-    await _findIfUpdateAvailable(updateValues["bn"] as int,isUpdateAvailable);
-    isUpdateAvailable.newVersionName = updateValues['v'];
+    isUpdateAvailable.isForceUpdate = updateValues['sforce'];
+    isUpdateAvailable.isUpdateAvailable = _findIfUpdateAvailable(updateValues["sbn"]);
+    isUpdateAvailable.currentVersionName = ReleaseValues.version;
+    isUpdateAvailable.newVersionName = updateValues['sv'];
     }on Exception
     catch(e){
-        print(e);
+        print("Update Inside $e");
     }
     return Future.value(isUpdateAvailable);
   }
 
-  Future<void> _findIfUpdateAvailable(int newBuildNumber,UpdateResponse response) async {
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      int buildNumber = packageInfo.buildNumber as int;
-      if(newBuildNumber > buildNumber){
-        response.isUpdateAvailable = true;
-        response.currentVersionName = packageInfo.version;
-      }
-    
-  }
+  bool _findIfUpdateAvailable(int newBuildNumber) =>
+       newBuildNumber > ReleaseValues.buildNumber;
 
 
 }

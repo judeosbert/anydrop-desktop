@@ -1,4 +1,5 @@
 import 'package:AnyDrop/helpers/ConnectionManager.dart';
+import 'package:AnyDrop/pages/UpdatePage.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 class UpdateButton extends StatefulWidget {
@@ -20,7 +21,7 @@ class _UpdateButtonState extends State<UpdateButton> {
       if (updateResult.isUpdateAvailable) {
         if (updateResult.isForceUpdate) {
           Navigator.of(context)
-              .pushReplacementNamed("/", arguments: updateResult);
+              .pushReplacementNamed(UpdatePage.routeName, arguments: updateResult.newVersionName);
         } else {
           setState(() {
             _isUpdateAvailable = true;
@@ -28,7 +29,7 @@ class _UpdateButtonState extends State<UpdateButton> {
         }
       }
     }).catchError((onError) {
-      print(onError.toString());
+      print("Update Outside ${onError.toString()}");
     });
   }
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
@@ -61,4 +62,4 @@ class StringBody{
 class UpdateResponse{
   bool isUpdateAvailable ,isForceUpdate;
   String currentVersionName,newVersionName;
-} 
+}
