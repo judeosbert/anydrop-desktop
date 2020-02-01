@@ -21,7 +21,8 @@ class CommandHelper{
     return "";
   }
   static Future<void> openFileManager(String path, {bool highlight = true}) async {
-    if(!Directory(path).existsSync()){
+    debugPrint("Path type ${FileSystemEntity.typeSync(path)}");
+    if(FileSystemEntity.typeSync(path) == FileSystemEntityType.directory &&!Directory(path).existsSync()){
       Directory(path).createSync(recursive: true);
     }
     String openCommand = _openCommand(highlight: highlight);

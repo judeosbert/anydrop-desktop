@@ -176,6 +176,7 @@ class TransactionsListState extends State<TransactionsList> {
     CommandHelper.openFileManager(fileTransaction.file.path).then((output){
       doSnackbar(context, "File opened in viewer");
     }).catchError((error){
+      debugPrint(error.toString());
       doSnackbar(context, "Error opening the file. Maybe the file doesn't exist.",type:SnackbarType.ERROR);
     });
 
