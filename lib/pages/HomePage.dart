@@ -15,7 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController portNumberController;
   Server server;
   bool isServerRunning = false;
   List<Log> _logs = [];
@@ -23,7 +22,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    portNumberController = TextEditingController(text: "8080");
     server = Server();
     server.onLog = onLog;
     server.onReceived = onReceived;
@@ -54,9 +52,7 @@ class _HomePageState extends State<HomePage> {
               ),
               onPressed: !isServerRunning
                   ? () {
-                      server
-                          .start(
-                              portNumber: int.parse(portNumberController.text))
+                      server.start()
                           .then((isAlive) {
                         if (isAlive) {
                           setState(() {
@@ -105,7 +101,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Center(
-                child: ConnectionParameterWidget(portNumberController),
+                child: ConnectionParameterWidget(),
               ),
               ConnectionStatusBar(isServerRunning),
               Container(

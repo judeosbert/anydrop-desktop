@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_framework/http.dart';
@@ -22,7 +22,9 @@ class Server {
   void Function(Transaction t) onReceived;
   void Function(String log) onLog;
   InternetAddress _localAddress = InternetAddress.anyIPv4;
+  int _portNumber = 22562;
   StreamController<Transaction> _streamController;
+
   Server._internal() {
     _initializeStreamController();
   }
@@ -34,19 +36,18 @@ class Server {
 
   Stream<Transaction> get transactionStream => _streamController.stream;
 
-  Future<bool> start({@required int portNumber}) async {
+  Future<bool> start() async {
     _app = Angel();
     _http = AngelHttp(_app);
     _app.get("/ping", _pingHandler);
     _app.post("/string", _stringMessageHandler);
     _app.post("/file", _uploadHandler);
 
-    onLog("Starting server on Port $portNumber");
-    try{
-      await _http.startServer(_localAddress.address, portNumber);
+    onLog("Starting server");
+    try {
+      await _http.startServer(_localAddress.address, _portNumber);
       return Future.value(true);
-    } on Exception
-    catch (e) {
+    } on Exception catch (e) {
       onLog(e.toString());
       print(e);
       return Future.value(false);
@@ -55,12 +56,11 @@ class Server {
 
   Future<bool> stop() async {
     bool isServerRunning = true;
-    try{
+    try {
       await _http.close();
       isServerRunning = false;
       onLog("Server Stopped");
-    }on Exception
-    catch(e){
+    } on Exception catch (e) {
       debugPrint(e.toString());
       onLog(e.toString());
     }
@@ -70,9 +70,10 @@ class Server {
 
   //Handler Functions
 
-  void _pingHandler(req, res) async {
-    //onLog("Ping Received");
-    res.write('Ping Received');
+  void _pingHandler(RequestContext req, ResponseContext res) async {
+    Map<String, dynamic> response = await PingResponse.toJson();
+    res.write(json.encode(response));
+    res.close();
   }
 
   void _stringMessageHandler(RequestContext req, ResponseContext res) async {
@@ -104,7 +105,7 @@ class Server {
       var result = await FileHelper.saveFile(file);
       debugPrint(result.toString());
       if (result.isSuccess) {
-        FileTransaction t = FileTransaction(file:result.file);
+        FileTransaction t = FileTransaction(file: result.file);
         _streamController.sink.add(t);
         onLog("File Saved to ${result.file.path}");
         res.statusCode = 200;

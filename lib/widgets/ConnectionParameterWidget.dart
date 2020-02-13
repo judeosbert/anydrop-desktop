@@ -2,40 +2,34 @@ import 'dart:io';
 
 import 'package:AnyDrop/DataTypes.dart';
 import 'package:AnyDrop/helpers/CommandHelper.dart';
+import 'package:AnyDrop/helpers/DeviceHelper.dart';
 import 'package:AnyDrop/helpers/FileHelper.dart';
+import 'package:AnyDrop/helpers/SharedPrefManager.dart';
 import 'package:AnyDrop/widgets/UpdateButton.dart';
+import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
 import 'package:AnyDrop/helpers/Utils.dart';
 class ConnectionParameterWidget extends StatefulWidget {
-  final TextEditingController controller;
-  ConnectionParameterWidget(this.controller);
+  ConnectionParameterWidget();
 
   @override
   _ConnectionParameterWidgetState createState() => _ConnectionParameterWidgetState();
 }
 
 class _ConnectionParameterWidgetState extends State<ConnectionParameterWidget> {
-  bool _isAddressReady = false;
-  String _ip;
-
-
-  Future<String> _findIp() async{
-    for (var interface in await NetworkInterface.list()){
-      return interface.addresses[0].address;
-    }
-    return "NO NETWORK DEVICES FOUND";
-  }
+  bool _isDeviceName = false;
+  String _deviceName;
 
   @override
   Widget build(BuildContext context) {
-    _findIp().then((String ip){
+    DeviceHelper.deviceName().then((String ip){
       setState(() {
-        _ip = ip;
-        _isAddressReady = true;
+        _deviceName = ip;
+        _isDeviceName = true;
       });
 
     });
-    if(!_isAddressReady){
+    if(!_isDeviceName){
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox.fromSize(
@@ -60,24 +54,26 @@ class _ConnectionParameterWidgetState extends State<ConnectionParameterWidget> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("Server Address"),
+            Text("Device Name "),
             SizedBox(width: 8,),
-            Text(_ip),
             SizedBox.fromSize(
-              size: Size(90, 40),
+              size: Size(200, 40),
               child: Center(
                 child: TextFormField(
                   onChanged: (value){
-                    RegExp exp = RegExp("^[0-9]{1,4}\$");
-                    if(!exp.hasMatch(value)){
-                      widget.controller.clear();
+                    if(value.length == 0){
+                      PersistentSnackbar.show(context, "Cannot be an empty text",type: SnackbarType.ERROR);
+                      return "";
                     }
+                    DeviceHelper.startSaveRoutineWith(value);
+                    PersistentSnackbar.cancel();
+                  return "";
                   },
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
-                    hintText: "Port",
+                    hintText: "Change device Name",
                   ),
-                  controller: widget.controller,
+                  initialValue: _deviceName,
                   keyboardType: TextInputType.number,
                 ),
               ),
