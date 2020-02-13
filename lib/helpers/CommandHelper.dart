@@ -10,13 +10,13 @@ class CommandHelper{
   static var _shell = Shell();
   static  String _openCommand({bool highlight = true}) {
     if (Platform.isMacOS) {
-      return "open "+(highlight?"-R ":" ");
+      return "open "+(highlight?"-R ":"");
     }
     else if (Platform.isLinux) {
       return "nautilus ";
     }
     else if (Platform.isWindows) {
-      return "explorer "+(highlight?"/select ":" ");
+      return "Explorer "+(highlight?"/select,":"");
     }
     return "";
   }

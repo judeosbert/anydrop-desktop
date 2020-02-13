@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:AnyDrop/helpers/DeviceHelper.dart';
+import 'package:AnyDrop/helpers/SharedPrefManager.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
@@ -62,4 +65,31 @@ class StringBody{
 class UpdateResponse{
   bool isUpdateAvailable ,isForceUpdate;
   String currentVersionName,newVersionName;
+}
+
+class PingResponse{
+  static Future<Map<String, dynamic>> toJson() async{
+      var deviceName = await DeviceHelper.deviceName();
+      return {
+        "deviceName":deviceName,
+        "deviceType":"laptop"
+      };
+  }
+}
+class DeviceNames{
+  static final _deviceNames = [
+    "Spiderman",
+    "Thanos",
+    "Deadpool",
+    "Hulk",
+    "Thor",
+    "Wolverine",
+    "Loki",
+    "Groot",
+    "Magneto",
+    "Juggernaut",
+    "Gamora",
+    "Ronan"
+  ];
+  static String get deviceName => _deviceNames[Random().nextInt(_deviceNames.length)];
 }

@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:AnyDrop/helpers/Utils.dart';
 import 'package:angel_framework/angel_framework.dart';
 
 class FileHelper {
-  static String saveDirectory = "$_homeDirectory/AnyDrop/";
+  static String saveDirectory = Utils.join([_homeDirectory,"AnyDrop"]);
   
   static Future<DiskSave> saveFile(UploadedFile uploadedFile) async{
     DiskSave diskSave = DiskSave();

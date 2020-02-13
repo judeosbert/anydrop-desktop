@@ -22,10 +22,13 @@ dependencies:
   angel_framework: ^2.0.0
   timeago: ^2.0.22
   path_provider: ^1.5.1
-  flushbar: ^1.9.1
+  flushbar:
+    git:
+      url: https://github.com/AndreHaueisen/flushbar.git
   process_run: ^0.10.6
   http: ^0.12.0+3
   url_launcher: ^5.4.1
+  shared_preferences: ^0.5.6+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
