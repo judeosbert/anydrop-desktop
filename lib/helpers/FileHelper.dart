@@ -11,7 +11,7 @@ class FileHelper {
     diskSave.isSuccess = true;
     try {
       var fileName = uploadedFile.filename;
-      File file = File("$saveDirectory$fileName");
+      File file = File(Utils.join([saveDirectory,fileName]));
       file.createSync(recursive: true);
       await uploadedFile.data.pipe(file.openWrite());
       diskSave.file = file;
