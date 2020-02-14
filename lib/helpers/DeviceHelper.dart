@@ -8,16 +8,15 @@ import '../DataTypes.dart';
 class DeviceHelper{
 
   static Timer _scheduler;
-
+  static SharedPrefManager _sharedPrefManager = SharedPrefManager();
   static Future<String> deviceName() async{
-    await SharedPrefManager.init();
-    return Future.value(SharedPrefManager.getString(SharedPrefManager.deviceNameKey) ??
+    return Future.value( await _sharedPrefManager.getString(SharedPrefManager.deviceNameKey,defaultValue: null) ??
         _setAndGetName().then((value) => value));
   }
 
   static Future<String> _setAndGetName() async{
     String deviceName = DeviceNames.deviceName;
-    await SharedPrefManager.setString(SharedPrefManager.deviceNameKey, deviceName);
+    _sharedPrefManager.setString(SharedPrefManager.deviceNameKey, deviceName);
     return deviceName;
   }
 
@@ -28,7 +27,7 @@ class DeviceHelper{
     }
     _scheduler = new Timer(Duration(milliseconds: 500),(){
       debugPrint("Starting SaveRoutine");
-      SharedPrefManager.setString(SharedPrefManager.deviceNameKey, deviceName);
+      _sharedPrefManager.setString(SharedPrefManager.deviceNameKey, deviceName);
       debugPrint("SaveRoutine Complete");
     });
     debugPrint("New SaveRoutine Created");

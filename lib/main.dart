@@ -1,29 +1,30 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart'
-    show debugDefaultTargetPlatformOverride;
 
 import 'package:AnyDrop/helpers/SharedPrefManager.dart';
 import 'package:AnyDrop/pages/UpdatePage.dart';
+import 'package:flutter/foundation.dart'
+    show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
 
 import 'pages/HomePage.dart';
 
-void main(){
+void main() {
   _setTargetPlatformForDesktop();
-  WidgetsFlutterBinding.ensureInitialized();
   initComponents();
   runApp(MyApp());
 }
 
-void initComponents(){
-  SharedPrefManager.init();
+void initComponents() async {
+  SharedPrefManager();
 }
+
 void _setTargetPlatformForDesktop() {
   // No need to handle macOS, as it has now been added to TargetPlatform.
   if (Platform.isLinux || Platform.isWindows) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
 }
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -36,8 +37,8 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(),
       routes: {
-        HomePage.routeName:(context) => HomePage(),
-        UpdatePage.routeName:(context) => UpdatePage(),
+        HomePage.routeName: (context) => HomePage(),
+        UpdatePage.routeName: (context) => UpdatePage(),
       },
       initialRoute: HomePage.routeName,
     );

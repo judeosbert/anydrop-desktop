@@ -26,6 +26,14 @@ class FileHelper {
     return Future.value(diskSave);
   }
 
+  static Future<File> createAndOpenFile(String fileName) async{
+    File file = File(Utils.join([saveDirectory,fileName]));
+    if(!await file.exists())
+      await file.create(recursive: false);
+    return Future.value(file);
+
+  }
+
   static Future<bool> deleteFile(File file) async{
     var result = await file.delete();
     return result.exists();
