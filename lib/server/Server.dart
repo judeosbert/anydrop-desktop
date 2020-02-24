@@ -1,16 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
+import 'package:AnyDrop/server/IServer.dart';
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_framework/http.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../helpers/FileHelper.dart';
 
 import '../DataTypes.dart';
+import '../helpers/FileHelper.dart';
 
-class Server {
+class Server extends IServer{
   static Server _instance = Server._internal();
 
   factory Server() {
@@ -21,8 +20,6 @@ class Server {
   AngelHttp _http;
   void Function(Transaction t) onReceived;
   void Function(String log) onLog;
-  InternetAddress _localAddress = InternetAddress.anyIPv4;
-  int _portNumber = 22562;
   StreamController<Transaction> _streamController;
 
   Server._internal() {
@@ -45,7 +42,7 @@ class Server {
 
     onLog("Starting server");
     try {
-      await _http.startServer(_localAddress.address, _portNumber);
+      await _http.startServer(localAddress.address, portNumber);
       return Future.value(true);
     } on Exception catch (e) {
       onLog(e.toString());
@@ -71,8 +68,7 @@ class Server {
   //Handler Functions
 
   void _pingHandler(RequestContext req, ResponseContext res) async {
-    Map<String, dynamic> response = await PingResponse.toJson();
-    res.write(json.encode(response));
+    res.write(PingResponse.toJson());
     res.close();
   }
 

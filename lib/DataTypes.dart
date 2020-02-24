@@ -1,8 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:AnyDrop/helpers/DeviceHelper.dart';
-import 'package:AnyDrop/helpers/SharedPrefManager.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
@@ -68,13 +68,14 @@ class UpdateResponse{
 }
 
 class PingResponse{
-  static Future<Map<String, dynamic>> toJson() async{
+  static Future<Map<String, dynamic>> toMap() async{
       var deviceName = await DeviceHelper.deviceName();
       return {
         "deviceName":deviceName,
         "deviceType":"laptop"
       };
   }
+  static Future<String> toJson() async => json.encode(await toMap());
 }
 class DeviceNames{
   static final _deviceNames = [

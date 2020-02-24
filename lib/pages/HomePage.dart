@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:AnyDrop/server/Server.dart';
+import 'package:AnyDrop/server/SocketServer.dart';
 import 'package:AnyDrop/widgets/ConnectionParameterWidget.dart';
 import 'package:AnyDrop/widgets/ConnectionStatusBar.dart';
 import 'package:AnyDrop/widgets/LogScreen.dart';
@@ -16,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Server server;
+  SocketServer socketServer;
   bool isServerRunning = false;
   List<Log> _logs = [];
 
@@ -23,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     server = Server();
+    socketServer = SocketServer();
     server.onLog = onLog;
     server.onReceived = onReceived;
   }
@@ -52,6 +57,7 @@ class _HomePageState extends State<HomePage> {
               ),
               onPressed: !isServerRunning
                   ? () {
+//                      socketServer.start().then((value) => debugPrint("Socket ready? $value"));
                       server.start()
                           .then((isAlive) {
                         if (isAlive) {
