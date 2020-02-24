@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:AnyDrop/DataTypes.dart';
 import 'package:AnyDrop/helpers/FileHelper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:process_run/shell.dart';
@@ -25,6 +24,7 @@ class CommandHelper{
     if(FileSystemEntity.typeSync(path) == FileSystemEntityType.directory &&!Directory(path).existsSync()){
       Directory(path).createSync(recursive: true);
     }
+    path = "\"$path\"";
     String openCommand = _openCommand(highlight: highlight);
     String completeCommand = "$openCommand$path";
     debugPrint("Executing Command $completeCommand");

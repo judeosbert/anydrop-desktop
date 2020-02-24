@@ -1,4 +1,4 @@
 class ReleaseValues{
-  static final String version = "1.0";
-  static final buildNumber = 1;
+  static final String version = "0.0.2";
+  static final buildNumber = 2;
 }

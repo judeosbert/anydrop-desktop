@@ -5,7 +5,7 @@ import 'package:AnyDrop/widgets/ReleaseValues.dart';
 import 'package:http/http.dart' show get;
 class ConnectionManager{
   //TestValues
-  var testResult = '{ "v": "1.0", "bn": 1, "force": false, "sv": "2.0", "sbn": 2, "sforce": true }';
+//  var testResult = '{ "v": "1.0", "bn": 1, "force": false, "sv": "0.0.2", "sbn": 2, "sforce": true }';
 
   static final ConnectionManager _instance = ConnectionManager._internal();
   factory ConnectionManager() => _instance;

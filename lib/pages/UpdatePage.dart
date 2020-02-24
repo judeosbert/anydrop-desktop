@@ -1,5 +1,6 @@
 import 'package:AnyDrop/widgets/ReleaseValues.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UpdatePage extends StatefulWidget {
   static final String routeName = "/update";
@@ -22,8 +23,11 @@ class _UpdatePageState extends State<UpdatePage> {
          Align(alignment: Alignment.center,
          child: RaisedButton(
            child: Text("Download the new update"),
-            onPressed: () {
-
+            onPressed: () async {
+             String urlToLaunch = "https://github.com/judeosbert/anydrop-desktop/releases";
+              if( await canLaunch(urlToLaunch)){
+              await launch(urlToLaunch);
+              }
            },
          ),),
          Align(alignment: Alignment(0,0.3),
